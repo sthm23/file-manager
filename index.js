@@ -34,7 +34,7 @@ process.stdin.on('data', data=>{
     createFile(str);
     console.log('Your position is: ', __dirname);
   }else if(str.startsWith('rn ')){
-    createFile(str);
+    changeName(str, __dirname);
     console.log('Your position is: ', __dirname);
   } else{
     console.log('Invalid input');
@@ -72,9 +72,14 @@ async function showFileContent(way){
 }
 
 async function createFile(way){
-  const contentName = way.slice(3);
+  const contentName = way.slice(4);
   const contentPath = path.join(__dirname, contentName);
   const content = await fs.writeFile(contentPath, '');
 
 }
-
+async function changeName(str, way){
+  const arrFile = str.slice(3).split(' ');
+  const pathToFile = path.join(way, arrFile[0]);
+  const pathToNewFile = path.join(way, arrFile[1]);
+  const reNameFile = await fs.rename(pathToFile, pathToNewFile);
+}
