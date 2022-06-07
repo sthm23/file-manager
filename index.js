@@ -1,4 +1,5 @@
 import path from 'path';
+import os from 'os';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 
@@ -44,6 +45,9 @@ process.stdin.on('data', data=>{
   }else if(str.startsWith('rm ')){
     deleteFile(str, __dirname);
     
+  }else if(str.startsWith('os --cpus')){
+    checkOS();
+    
   } else{
     console.log('Invalid input');
     console.log('Your position is: ', __dirname);
@@ -57,6 +61,7 @@ process.on('error', ()=>console.log('Operation failed'));
 process.on('SIGINT', () => process.exit());
 // process.on('exit', ()=>console.log(byeText + userName + '!'));
 
+//path oparation
 async function prevPath(way){
   __dirname = path.join(way, '../');
   console.log('Your position is: ', __dirname);
@@ -67,7 +72,7 @@ async function nextPath(way){
   __dirname = path.join(__dirname, correctWay);
   console.log('Your position is: ', __dirname);
 }
-
+//file system 
 async function  showContent(way) {
   const up = path.join(way);
   let a = await fs.readdir(up);
@@ -121,3 +126,9 @@ async function deleteFile(str, way){
   console.log('Your position is: ', __dirname);
 }
 
+//operation system
+function checkOS(){
+  const operationSystem = os.cpus();
+  console.log(operationSystem);
+  console.log('Your position is: ', __dirname);
+}
