@@ -10,7 +10,6 @@ const byeText = 'Thank you for using File Manager, ';
 let arg = process.argv.slice(2);
 // const userName = arg[0].split('=')[1];
 
-
 // console.log(welcomeText + userName + '!');
 console.log('Your position is: ',__dirname);
 process.stdin.on('data', data=>{
@@ -20,23 +19,29 @@ process.stdin.on('data', data=>{
     process.exit();
   }else if(str === 'up' || str === 'cd ..'){
     prevPath(__dirname);
-    console.log('Your position is: ', __dirname);
+    
   }else if(str.includes('cd ') && str !== 'cd ..'){
     nextPath(str);
-    console.log('Your position is: ', __dirname);
+    
   }else if(str === 'ls'){
     showContent(__dirname);
-    console.log('Your position is: ', __dirname);
+    
   }else if(str.startsWith('cat ')){
     showFileContent(str);
-    console.log('Your position is: ', __dirname);
+    
   }else if(str.startsWith('add ')){
     createFile(str);
-    console.log('Your position is: ', __dirname);
+    
   }else if(str.startsWith('rn ')){
     changeName(str, __dirname);
-    console.log('Your position is: ', __dirname);
-  } else{
+    
+  }else if(str.startsWith('cp ')){
+    copyDirectory(str, __dirname);
+    
+  }else if(str.startsWith('rm ')){
+    deleteFile(str, __dirname);
+    
+  }  else{
     console.log('Invalid input');
     console.log('Your position is: ', __dirname);
   }
@@ -50,36 +55,56 @@ process.on('SIGINT', () => process.exit());
 // process.on('exit', ()=>console.log(byeText + userName + '!'));
 
 async function prevPath(way){
-  return __dirname = path.join(way, '../');
+  __dirname = path.join(way, '../');
+  console.log('Your position is: ', __dirname);
 }
 
 async function nextPath(way){
   const correctWay = way.slice(3);
-  return __dirname = path.join(__dirname, correctWay);
+  __dirname = path.join(__dirname, correctWay);
+  console.log('Your position is: ', __dirname);
 }
 
 async function  showContent(way) {
   const up = path.join(way);
   let a = await fs.readdir(up);
-  return console.log(a);
+  console.log(a);
+  console.log('Your position is: ', __dirname);
 }
 
 async function showFileContent(way){
   const contentName = way.slice(4);
   const contentPath = path.join(__dirname, contentName);
   const content = await fs.readFile(contentPath, 'utf-8');
-  return console.log(content);
+  console.log(content);
+  console.log('Your position is: ', __dirname);
 }
 
 async function createFile(way){
   const contentName = way.slice(4);
   const contentPath = path.join(__dirname, contentName);
   const content = await fs.writeFile(contentPath, '');
-
+  console.log('Your position is: ', __dirname);
 }
 async function changeName(str, way){
   const arrFile = str.slice(3).split(' ');
   const pathToFile = path.join(way, arrFile[0]);
   const pathToNewFile = path.join(way, arrFile[1]);
   const reNameFile = await fs.rename(pathToFile, pathToNewFile);
+  console.log('Your position is: ', __dirname);
+}
+
+async function copyDirectory(str, way){
+  const fileNames = str.slice(3).split(' ');
+  const source = path.join(way, fileNames[0]);
+  const destination = path.join(way, fileNames[1]);
+  await fs.copyFile(source, destination);
+  console.log('Your position is: ', __dirname);
+}
+
+async function deleteFile(str, way){
+  const fileNames = str.slice(3);
+  const source = path.join(way, fileNames);
+  await fs.rm(source);
+  console.log('Your position is: ', __dirname);
 }
