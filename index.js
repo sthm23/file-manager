@@ -38,10 +38,13 @@ process.stdin.on('data', data=>{
   }else if(str.startsWith('cp ')){
     copyDirectory(str, __dirname);
     
+  }else if(str.startsWith('mv ')){
+    movePath(str, __dirname);
+    
   }else if(str.startsWith('rm ')){
     deleteFile(str, __dirname);
     
-  }  else{
+  } else{
     console.log('Invalid input');
     console.log('Your position is: ', __dirname);
   }
@@ -102,9 +105,19 @@ async function copyDirectory(str, way){
   console.log('Your position is: ', __dirname);
 }
 
+async function movePath(str, way){
+  const fileNames = str.slice(3).split(' ');
+  const source = path.join(way, fileNames[0]);
+  const destination = path.join(way, fileNames[1]);
+  await fs.copyFile(source, destination);
+  await fs.rm(source);
+  console.log('Your position is: ', __dirname);
+}
+
 async function deleteFile(str, way){
   const fileNames = str.slice(3);
   const source = path.join(way, fileNames);
   await fs.rm(source);
   console.log('Your position is: ', __dirname);
 }
+
