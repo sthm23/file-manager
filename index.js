@@ -66,10 +66,10 @@ process.stdin.on('data', data=>{
     calculateHash(str);
     
   }else if(str.startsWith('compress ')){
-    // checkEOL();
+    compressFile(str);
     
   }else if(str.startsWith('decompress ')){
-    // checkEOL();
+    decompressFile(str);
     
   } else{
     console.log('Invalid input');
@@ -205,17 +205,17 @@ function homeDir(){
 }
 
 function checkUserName(){
-  const user = os.hostname();
+  const user = os.userInfo().username;
   console.log(user);
   console.log('You are currently in: ', __dirname);
 }
 
 function checkProcessor(){
-  const proc = os.endianness()
+  const proc = os.arch()
   console.log(proc);
   console.log('You are currently in: ', __dirname);
 }
-
+//change to HASH
 async function calculateHash(str){
   const hashItem = str.slice(5);
   const pathTofile = path.join(__dirname, hashItem);
@@ -232,4 +232,22 @@ async function calculateHash(str){
   }
 
 }
+
+// async function compressFile(str){
+//   const arrFiles = 'compress path_to_file path_to_destination'.slice(9).split(' ');
+//   const source = path.join(__dirname, arrFiles[0]);
+//   const destination = path.join(__dirname, arrFiles[1]);
+
+//   try {
+//     const 
+//   } catch (error) {
+//     console.log('Operation failed: you write incorrect file name to compress.');
+//     console.log('You are currently in: ', __dirname);
+//   }
+// }
+
+// async function decompressFile(str){
+
+// }
+
 
