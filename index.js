@@ -2,6 +2,7 @@ import path from 'path';
 import os from 'os';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
+import { createHash } from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
@@ -12,7 +13,8 @@ let arg = process.argv.slice(2);
 // const userName = arg[0].split('=')[1];
 
 // console.log(welcomeText + userName + '!');
-console.log('Your position is: ',__dirname);
+console.log('You are currently in: ',__dirname);
+
 process.stdin.on('data', data=>{
   const str = data.toString().trim();
 
@@ -46,16 +48,34 @@ process.stdin.on('data', data=>{
     deleteFile(str, __dirname);
     
   }else if(str.startsWith('os --cpus')){
-    checkOS();
+    checkCpus();
+    
+  }else if(str.startsWith('os --EOL')){
+    checkEOL();
+    
+  }else if(str.startsWith('os --homedir')){
+    homeDir();
+    
+  }else if(str.startsWith('os --username')){
+    checkUserName();
+    
+  }else if(str.startsWith('os --architecture')){
+    checkProcessor();
+    
+  }else if(str.startsWith('hash ')){
+    calculateHash(str);
+    
+  }else if(str.startsWith('compress ')){
+    // checkEOL();
+    
+  }else if(str.startsWith('decompress ')){
+    // checkEOL();
     
   } else{
     console.log('Invalid input');
-    console.log('Your position is: ', __dirname);
+    console.log('You are currently in: ', __dirname);
   }
 
- 
-  
-  
 });
 process.on('error', ()=>console.log('Operation failed'));
 process.on('SIGINT', () => process.exit());
@@ -64,7 +84,7 @@ process.on('SIGINT', () => process.exit());
 //path oparation
 async function prevPath(way){
   __dirname = path.join(way, '../');
-  console.log('Your position is: ', __dirname);
+  console.log('You are currently in: ', __dirname);
 }
 
 async function nextPath(way){
@@ -72,12 +92,18 @@ async function nextPath(way){
   const nextWay = path.join(__dirname, correctWay);
 
   try {
-    const ways = await fs.access(nextWay);
-    if(!ways)  __dirname = nextWay;
-    console.log('Your position is: ', __dirname);
+    const checkF = await fs.stat(nextWay);
+    const checkWay = await fs.access(nextWay);
+    if(checkWay === undefined && checkF.isDirectory()){
+      __dirname = nextWay;
+      console.log('You are currently in: ', __dirname);
+    }else{
+      console.log('Operation failed: Your write incorrect way.');
+      console.log('You are currently in: ', __dirname);
+    }
   } catch (error) {
-    console.log('Your write incorrect way, Please write correct way. ');
-    console.log('Your position is: ', __dirname);
+    console.log('Operation failed: Your write incorrect way.');
+    console.log('You are currently in: ', __dirname);
   }
 }
 
@@ -86,58 +112,124 @@ async function  showContent(way) {
   const up = path.join(way);
   let a = await fs.readdir(up);
   console.log(a);
-  console.log('Your position is: ', __dirname);
+  console.log('You are currently in: ', __dirname);
 }
 
 async function showFileContent(way){
   const contentName = way.slice(4);
   const contentPath = path.join(__dirname, contentName);
-  const content = await fs.readFile(contentPath, 'utf-8');
-  console.log(content);
-  console.log('Your position is: ', __dirname);
+  try {
+    const content = await fs.readFile(contentPath, 'utf-8');
+    console.log(content);
+    console.log('You are currently in: ', __dirname);
+  } catch (error) {
+    console.log('Operation failed: you write incorrect file name.');
+    console.log('You are currently in: ', __dirname);
+  }
 }
 
 async function createFile(way){
   const contentName = way.slice(4);
   const contentPath = path.join(__dirname, contentName);
   const content = await fs.writeFile(contentPath, '');
-  console.log('Your position is: ', __dirname);
+  console.log('You are currently in: ', __dirname);
 }
 async function changeName(str, way){
   const arrFile = str.slice(3).split(' ');
   const pathToFile = path.join(way, arrFile[0]);
   const pathToNewFile = path.join(way, arrFile[1]);
-  const reNameFile = await fs.rename(pathToFile, pathToNewFile);
-  console.log('Your position is: ', __dirname);
+  try {
+    const reNameFile = await fs.rename(pathToFile, pathToNewFile);
+    console.log('You are currently in: ', __dirname);
+  } catch (error) {
+    console.log('Operation failed: you write incorrect file name to rename.');
+    console.log('You are currently in: ', __dirname);
+  }
 }
 
 async function copyDirectory(str, way){
   const fileNames = str.slice(3).split(' ');
   const source = path.join(way, fileNames[0]);
   const destination = path.join(way, fileNames[1]);
-  await fs.copyFile(source, destination);
-  console.log('Your position is: ', __dirname);
+  try {
+    await fs.copyFile(source, destination);
+    console.log('You are currently in: ', __dirname);
+  } catch (error) {
+    console.log('Operation failed: you write incorrect file name to copy.');
+    console.log('You are currently in: ', __dirname);
+  }
 }
 
 async function movePath(str, way){
   const fileNames = str.slice(3).split(' ');
   const source = path.join(way, fileNames[0]);
   const destination = path.join(way, fileNames[1]);
-  await fs.copyFile(source, destination);
-  await fs.rm(source);
-  console.log('Your position is: ', __dirname);
+  try {
+    await fs.copyFile(source, destination);
+    await fs.rm(source);
+    console.log('You are currently in: ', __dirname);
+  } catch (error) {
+    console.log('Operation failed: you write incorrect file name to move.');
+    console.log('You are currently in: ', __dirname);
+  }
 }
 
 async function deleteFile(str, way){
   const fileNames = str.slice(3);
   const source = path.join(way, fileNames);
-  await fs.rm(source);
-  console.log('Your position is: ', __dirname);
+  try {
+    await fs.rm(source);
+    console.log('You are currently in: ', __dirname);
+  } catch (error) {
+    console.log('Operation failed: you write incorrect file name to delete.');
+    console.log('You are currently in: ', __dirname);
+  }
 }
 
 //operation system
-function checkOS(){
+function checkCpus(){
   const operationSystem = os.cpus();
   console.log(operationSystem);
-  console.log('Your position is: ', __dirname);
+  console.log('You are currently in: ', __dirname);
 }
+function checkEOL(){
+  const checkEOL = JSON.stringify(os.EOL);
+  console.log(`Default system End-Of-Line: ${checkEOL}`);
+  console.log('You are currently in: ', __dirname);
+}
+
+function homeDir(){
+  const homeDir = os.homedir()
+  console.log(homeDir);
+  console.log('You are currently in: ', __dirname);
+}
+
+function checkUserName(){
+  const user = os.hostname();
+  console.log(user);
+  console.log('You are currently in: ', __dirname);
+}
+
+function checkProcessor(){
+  const proc = os.endianness()
+  console.log(proc);
+  console.log('You are currently in: ', __dirname);
+}
+
+async function calculateHash(str){
+  const hashItem = str.slice(5);
+  const pathTofile = path.join(__dirname, hashItem);
+
+  try {
+    const text = await fs.readFile(pathTofile);
+    const hash = createHash('sha256');
+    const resaltHash = hash.update(text).digest('hex');
+    console.log(resaltHash);
+    console.log('You are currently in: ', __dirname);
+  } catch (error) {
+    console.log('Operation failed: you write incorrect file name to hash.');
+    console.log('You are currently in: ', __dirname);
+  }
+
+}
+
