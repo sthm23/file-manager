@@ -69,9 +69,18 @@ async function prevPath(way){
 
 async function nextPath(way){
   const correctWay = way.slice(3);
-  __dirname = path.join(__dirname, correctWay);
-  console.log('Your position is: ', __dirname);
+  const nextWay = path.join(__dirname, correctWay);
+
+  try {
+    const ways = await fs.access(nextWay);
+    if(!ways)  __dirname = nextWay;
+    console.log('Your position is: ', __dirname);
+  } catch (error) {
+    console.log('Your write incorrect way, Please write correct way. ');
+    console.log('Your position is: ', __dirname);
+  }
 }
+
 //file system 
 async function  showContent(way) {
   const up = path.join(way);
