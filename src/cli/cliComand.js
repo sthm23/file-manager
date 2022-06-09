@@ -33,7 +33,7 @@ async function checkCliComand(str, __dirname){
     return __dirname;
     
   }else if(str.startsWith('mv ')){
-    all.movePath(str, __dirname);
+    await all.movePath(str, __dirname);
     return __dirname;
     
   }else if(str.startsWith('rm ')){
