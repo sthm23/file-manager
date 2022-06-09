@@ -4,6 +4,8 @@ import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
 import fs_main from 'fs';
+import {pipeline} from 'stream';
+import {createBrotliCompress, createBrotliDecompress} from 'zlib';
 
 import { welcome } from './cli/welcome.js';
 import { nextPath } from "./nwd/nextFolder.js";
@@ -21,11 +23,14 @@ import {checkEOL} from './os/checkEOL.js';
 import {checkProcessor} from './os/checkProcess.js';
 import {homeDir} from './os/homeDir.js';
 import {checkUserName} from './os/username.js';
+import { compressFile } from './zip/compress.js';
+import {decompressFile} from './zip/decompress.js';
 
 const __filename = fileURLToPath(import.meta.url);
 
 export {path, os, fs, createHash, __filename , fs_main, welcome,
   nextPath, prevPath, showContent, showFileContent, createFile, changeName, 
   copyDirectory, movePath, deleteFile, calculateHash, checkCpus, checkEOL,
-  checkProcessor, homeDir, checkUserName
+  checkProcessor, homeDir, checkUserName, createBrotliCompress, createBrotliDecompress, 
+  pipeline, compressFile, decompressFile
 };

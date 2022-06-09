@@ -65,11 +65,11 @@ async function checkCliComand(str, __dirname){
     return __dirname;
     
   }else if(str.startsWith('compress ')){
-    all.compressFile(str);
+    all.compressFile(str, __dirname);
     return __dirname;
     
   }else if(str.startsWith('decompress ')){
-    all.decompressFile(str);
+    all.decompressFile(str, __dirname);
     return __dirname;
     
   } else{

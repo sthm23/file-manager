@@ -1,16 +1,28 @@
-// async function compressFile(str){
-//   const arrFiles = 'compress path_to_file path_to_destination'.slice(9).split(' ');
-//   const source = path.join(__dirname, arrFiles[0]);
-//   const destination = path.join(__dirname, arrFiles[1]);
+import { path, pipeline, createBrotliCompress, fs_main as fs } from '../template.js';
 
-//   try {
-//     const 
-//   } catch (error) {
-//     console.log('Operation failed: you write incorrect file name to compress.');
-//     console.log('You are currently in: ', __dirname);
-//   }
-// }
+async function compressFile(str, __dirname){
+  const arrFiles = str.slice(9).split(' ');
+  const source = path.join(__dirname, arrFiles[0]);
+  const destination = path.join(__dirname, arrFiles[1]);
 
-// async function decompressFile(str){
+  const readable = fs.createReadStream(source);
+  const writable = fs.createWriteStream(destination);
+  const brCompres = createBrotliCompress();
 
-// }
+  pipeline(
+    readable,
+    brCompres,
+    writable, 
+    err => {
+      if(err){
+        console.log('Operation failed: you write incorrect file name to compress.');
+        console.log('You are currently in: ', __dirname);
+      }else{
+        console.log('compress done!');
+        console.log('You are currently in: ', __dirname);
+      }
+    }
+  );
+}
+
+export {compressFile};
