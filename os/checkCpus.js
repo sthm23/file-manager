@@ -1,5 +1,6 @@
+import {os} from '../template.js';
 
-function checkCpus(){
+export function checkCpus(__dirname){
   const operationSystem = os.cpus();
   console.log(operationSystem);
   console.log('You are currently in: ', __dirname);

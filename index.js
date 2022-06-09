@@ -12,6 +12,11 @@ import { copyDirectory } from './fs/copy.js';
 import { movePath } from './fs/moveFile.js';
 import { deleteFile } from './fs/remove.js';
 import {calculateHash} from './hash/calcHash.js';
+import {checkCpus} from './os/checkCpus.js';
+import {checkEOL} from './os/checkEOL.js';
+import {checkProcessor} from './os/checkProcess.js';
+import {homeDir} from './os/homeDir.js';
+import {checkUserName} from './os/username.js';
 
 let __dirname = path.dirname(__filename);
 
@@ -61,22 +66,22 @@ process.stdin.on('data', async data=>{
     deleteFile(str, __dirname);
     
   }else if(str.startsWith('os --cpus')){
-    checkCpus();
+    checkCpus(__dirname);
     
   }else if(str.startsWith('os --EOL')){
-    checkEOL();
+    checkEOL(__dirname);
     
   }else if(str.startsWith('os --homedir')){
-    homeDir();
+    homeDir(__dirname);
     
   }else if(str.startsWith('os --username')){
-    checkUserName();
+    checkUserName(__dirname);
     
   }else if(str.startsWith('os --architecture')){
-    checkProcessor();
+    checkProcessor(__dirname);
     
   }else if(str.startsWith('hash ')){
-    
+
     calculateHash(str, __dirname);
     
   }else if(str.startsWith('compress ')){
