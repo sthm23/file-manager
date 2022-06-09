@@ -11,7 +11,7 @@ import {changeName} from './fs/changeName.js';
 import { copyDirectory } from './fs/copy.js';
 import { movePath } from './fs/moveFile.js';
 import { deleteFile } from './fs/remove.js';
-
+import {calculateHash} from './hash/calcHash.js';
 
 let __dirname = path.dirname(__filename);
 
@@ -76,7 +76,8 @@ process.stdin.on('data', async data=>{
     checkProcessor();
     
   }else if(str.startsWith('hash ')){
-    calculateHash(str);
+    
+    calculateHash(str, __dirname);
     
   }else if(str.startsWith('compress ')){
     compressFile(str);
