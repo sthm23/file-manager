@@ -2,7 +2,7 @@ import * as all from '../template.js';
 
 async function checkCliComand(str, __dirname){
   if(str === '.exit'){
-    all.process.exit();
+    process.exit();
 
   }else if(str === 'up' || str === 'cd ..'){
     let res = await all.prevPath(__dirname);
@@ -25,7 +25,7 @@ async function checkCliComand(str, __dirname){
     return __dirname;
     
   }else if(str.startsWith('rn ')){
-    all.changeName(str, __dirname);
+    await all.changeName(str, __dirname);
     return __dirname;
     
   }else if(str.startsWith('cp ')){
