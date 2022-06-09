@@ -12,11 +12,13 @@ async function nextPath(way, __dirname){
       return nextWay;
     }else{
       console.log('Operation failed: Your write incorrect way.');
-      console.log('You are currently in: ', nextWay);
+      console.log('You are currently in: ', __dirname);
+      return __dirname;
     }
   } catch (error) {
     console.log('Operation failed: Your write incorrect way.');
-    console.log('You are currently in: ', nextWay);
+    console.log('You are currently in: ', __dirname);
+    return __dirname;
   }
 }
 

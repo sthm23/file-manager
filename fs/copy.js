@@ -1,4 +1,4 @@
-
+import {path, fs} from '../template.js';
 
 async function copyDirectory(str, way){
   const fileNames = str.slice(3).split(' ');
@@ -6,9 +6,11 @@ async function copyDirectory(str, way){
   const destination = path.join(way, fileNames[1]);
   try {
     await fs.copyFile(source, destination);
-    console.log('You are currently in: ', __dirname);
+    console.log('You are currently in: ', way);
   } catch (error) {
     console.log('Operation failed: you write incorrect file name to copy.');
-    console.log('You are currently in: ', __dirname);
+    console.log('You are currently in: ', way);
   }
 }
+
+export {copyDirectory};

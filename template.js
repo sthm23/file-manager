@@ -3,11 +3,11 @@ import os from 'os';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
+import fs_main from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
-let pathFolder = path.dirname(__filename);
 
-export {path, os, fs, createHash, pathFolder};
+export {path, os, fs, createHash, __filename , fs_main};
 
 
 
