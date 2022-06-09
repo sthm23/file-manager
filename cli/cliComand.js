@@ -1,28 +1,22 @@
-import {checkCliComand} from './cli/cliComand.js';
-import { path, os, fs, createHash, pathFolder } from './template.js';
+// import {__dirname as pathFolder} from '../index.js';
+// let __dirname = pathFolder;
+import { nextPath } from "../nwd/nextFolder.js";
+import { prevPath } from "../nwd/prevFolder.js";
+import { showContent } from "../nwd/list.js";
 
-let __dirname = path.join(pathFolder);
-
-import { nextPath } from "./nwd/nextFolder.js";
-import { prevPath } from "./nwd/prevFolder.js";
-import { showContent } from "./nwd/list.js";
-
-
-process.stdin.on('data', async data=>{
-  const str = data.toString().trim();
-
+export function checkCliComand(str, __dirname){
   if(str === '.exit'){
     process.exit();
   }else if(str === 'up' || str === 'cd ..'){
-    __dirname = (await prevPath(__dirname)).toString();
+    return prevPath(__dirname);
     
   }else if(str.includes('cd ') && str !== 'cd ..'){
-    __dirname = (await nextPath(str, __dirname)).toString();
+    return nextPath(str);
     
   }else if(str === 'ls'){
     showContent(__dirname);
     
-  } /*else if(str.startsWith('cat ')){
+  }else if(str.startsWith('cat ')){
     showFileContent(str, __dirname);
     
   }else if(str.startsWith('add ')){
@@ -64,11 +58,8 @@ process.stdin.on('data', async data=>{
   }else if(str.startsWith('decompress ')){
     decompressFile(str);
     
-  } */else{
+  } else{
     console.log('Invalid input');
     console.log('You are currently in: ', __dirname);
   }
-
-});
-
-
+}
