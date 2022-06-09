@@ -1,65 +1,82 @@
-// import {__dirname as pathFolder} from '../index.js';
-// let __dirname = pathFolder;
-import { nextPath } from "../nwd/nextFolder.js";
-import { prevPath } from "../nwd/prevFolder.js";
-import { showContent } from "../nwd/list.js";
+import * as all from '../template.js';
 
-export function checkCliComand(str, __dirname){
+async function checkCliComand(str, __dirname){
   if(str === '.exit'){
-    process.exit();
+    all.process.exit();
+
   }else if(str === 'up' || str === 'cd ..'){
-    return prevPath(__dirname);
-    
+    let res = await all.prevPath(__dirname);
+    return res;
+
   }else if(str.includes('cd ') && str !== 'cd ..'){
-    return nextPath(str);
-    
+    let res = await all.nextPath(str, __dirname);
+    return res;
+
   }else if(str === 'ls'){
-    showContent(__dirname);
+    all.showContent(__dirname);
+    return __dirname;
+
+  } else if(str.startsWith('cat ')){    
+    all.showFileContent(str, __dirname);
+    return __dirname;
     
-  }else if(str.startsWith('cat ')){
-    showFileContent(str, __dirname);
-    
-  }else if(str.startsWith('add ')){
-    createFile(str);
+  }else if(str.startsWith('add ')){    
+    all.createFile(str, __dirname);
+    return __dirname;
     
   }else if(str.startsWith('rn ')){
-    changeName(str, __dirname);
+    all.changeName(str, __dirname);
+    return __dirname;
     
   }else if(str.startsWith('cp ')){
-    copyDirectory(str, __dirname);
+    all.copyDirectory(str, __dirname);
+    return __dirname;
     
   }else if(str.startsWith('mv ')){
-    movePath(str, __dirname);
+    all.movePath(str, __dirname);
+    return __dirname;
     
   }else if(str.startsWith('rm ')){
-    deleteFile(str, __dirname);
+    all.deleteFile(str, __dirname);
+    return __dirname;
     
   }else if(str.startsWith('os --cpus')){
-    checkCpus();
+    all.checkCpus(__dirname);
+    return __dirname;
     
   }else if(str.startsWith('os --EOL')){
-    checkEOL();
+    all.checkEOL(__dirname);
+    return __dirname;
     
   }else if(str.startsWith('os --homedir')){
-    homeDir();
+    all.homeDir(__dirname);
+    return __dirname;
     
   }else if(str.startsWith('os --username')){
-    checkUserName();
+    all.checkUserName(__dirname);
+    return __dirname;
     
   }else if(str.startsWith('os --architecture')){
-    checkProcessor();
+    all.checkProcessor(__dirname);
+    return __dirname;
     
   }else if(str.startsWith('hash ')){
-    calculateHash(str);
+    all.calculateHash(str, __dirname);
+    return __dirname;
     
   }else if(str.startsWith('compress ')){
-    compressFile(str);
+    all.compressFile(str);
+    return __dirname;
     
   }else if(str.startsWith('decompress ')){
-    decompressFile(str);
+    all.decompressFile(str);
+    return __dirname;
     
   } else{
     console.log('Invalid input');
     console.log('You are currently in: ', __dirname);
+    return __dirname;
   }
 }
+
+export {checkCliComand};
