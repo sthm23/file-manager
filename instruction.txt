@@ -1,0 +1,61 @@
+# file-manager
+
+
+
+## The program is started by npm-script start in following way:
+npm run start -- --username=your_username
+
+## All commands
+help
+
+## Go upper from current directory
+up 
+cd ..
+
+## Go to dedicated folder from current directory
+cd path_to_directory
+
+## List all files and folder in current directory
+ls
+
+## Read file
+cat file_name
+
+## Create empty file
+add new_file_name
+
+## Rename file
+rn file_name new_filename
+
+## Copy file
+cp file_name destination_with_new_file_name
+
+## Move file 
+mv file_name destination_with_new_file_name
+
+## Delete file
+rm file_name
+
+## Get EOL (default system End-Of-Line)
+os --EOL
+
+## Get host machine CPUs info
+os --cpus
+
+## Get home directory
+os --homedir
+
+## Get current system user name
+os --username
+
+## Get CPU architecture for which Node.js binary has compiled
+os --architecture
+
+## Calculate hash for file
+hash path_to_file
+
+## Compress file
+compress file_name new_file_name
+
+## Decompress file
+decompress compres_file_name path_to_destination

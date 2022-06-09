@@ -25,6 +25,7 @@ import {homeDir} from './os/homeDir.js';
 import {checkUserName} from './os/username.js';
 import { compressFile } from './zip/compress.js';
 import {decompressFile} from './zip/decompress.js';
+import { helper } from './cli/helpCom.js';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -32,5 +33,5 @@ export {path, os, fs, createHash, __filename , fs_main, welcome,
   nextPath, prevPath, showContent, showFileContent, createFile, changeName, 
   copyDirectory, movePath, deleteFile, calculateHash, checkCpus, checkEOL,
   checkProcessor, homeDir, checkUserName, createBrotliCompress, createBrotliDecompress, 
-  pipeline, compressFile, decompressFile
+  pipeline, compressFile, decompressFile, helper
 };

@@ -72,6 +72,10 @@ async function checkCliComand(str, __dirname){
     all.decompressFile(str, __dirname);
     return __dirname;
     
+  }else if(str.startsWith('help')){
+    all.helper(__dirname);
+    return __dirname;
+    
   } else{
     console.log('Invalid input');
     console.log('You are currently in: ', __dirname);

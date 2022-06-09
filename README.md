@@ -1,9 +1,14 @@
 # file-manager
 
-# instruction commands
+
+
 ## The program is started by npm-script start in following way:
 
 - npm run start -- --username=your_username
+
+## instruction commands
+
+- help
 
 ## Go upper from current directory (when you are in the root folder this operation shouldn't change working directory)
 
