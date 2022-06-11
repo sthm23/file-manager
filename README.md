@@ -34,11 +34,11 @@
 
 - rn path_to_file new_filename
 
-## Copy file
+## Copy file (first arg is fileName, second arg is path where you want to copy file)
 
 - cp path_to_file path_to_new_directory
 
-## Move file (same as copy but initial file is deleted)
+## Move file (same as copy but initial file is deleted)(first arg is fileName, second arg is path where you want to copy file)
 
 - mv path_to_file path_to_new_directory
 
